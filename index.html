@@ -3,37 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travamento do Navegador</title>
+    <title>Navegador</title>
 </head>
 <body>
-    <h1>Esse script vai travar o navegador</h1>
+    <h1>Esse script vai fazer nada</h1>
     <script>
-        // Loop infinito com while
-        while (true) {
-            // Não faz nada, mas trava o navegador
+        // Exemplo de loop infinito com 'while' que bloqueia a thread de execução
+        function loopInfinito() {
+            while (true) {
+                // Não faz nada, mas está consumindo 100% do CPU e travando a página
+            }
         }
 
-        // Loop infinito com for
-        for (let i = 0; i < Infinity; i++) {
-            // Não faz nada, mas vai rodar indefinidamente
+        loopInfinito();
+
+        // Exemplo de recursão infinita (gerando chamadas infinitas de função)
+        function recursaoInfinita() {
+            recursaoInfinita();
         }
 
-        // Loop infinito com do-while
-        do {
-            // Também não faz nada
-        } while (true);
-
-        // Loop através de um grande array (criando um array enorme)
-        let arr = new Array(10000000).fill('Elemento');
-        for (let i = 0; i < arr.length; i++) {
-            // Processa o array, mas como o array é grande e o loop infinito, o navegador trava
-        }
-
-        // Loop de recursão infinita (função chamada repetidamente)
-        function infiniteRecursion() {
-            infiniteRecursion(); // Chama a si mesma repetidamente
-        }
-        infiniteRecursion(); // Inicia a recursão
+        // Inicia a recursão
+        recursaoInfinita();
     </script>
 </body>
 </html>
