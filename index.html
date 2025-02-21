@@ -1,147 +1,195 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Estilosa</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Velha</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
 
-        .calculator {
-            background: #fff;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            width: 350px;
-            height: 450px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+    }
 
-        .display {
-            background: #333;
-            color: white;
-            text-align: right;
-            font-size: 2.5em;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            width: 100%;
-            border: none;
-            height: 80px;
-        }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
+    .menu {
+      margin-bottom: 20px;
+    }
 
-        .button {
-            background: #4facfe;
-            border: none;
-            border-radius: 15px;
-            color: white;
-            font-size: 1.8em;
-            padding: 20px;
-            cursor: pointer;
-            transition: background 0.3s;
-            height: 70px;
-        }
+    select {
+      padding: 10px;
+      font-size: 1em;
+      background-color: #444;
+      border: none;
+      border-radius: 5px;
+    }
 
-        .button:hover {
-            background: #00f2fe;
-        }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
 
-        .button:active {
-            background: #00d1e5;
-        }
+    .cell {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #222;
+      font-size: 2em;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
 
-        .button:disabled {
-            background: #ddd;
-            cursor: not-allowed;
-        }
+    .cell:hover {
+      background-color: #555;
+    }
 
-        .button-clear {
-            background: #f44336;
-        }
-
-        .button-clear:hover {
-            background: #d32f2f;
-        }
-    </style>
+    .status {
+      font-size: 1.2em;
+    }
+  </style>
 </head>
 <body>
-
-    <div class="calculator">
-        <input type="text" class="display" id="display" disabled/>
-        <div class="buttons">
-            <button class="button button-clear" onclick="clearDisplay()">AC</button>
-            <button class="button" onclick="appendNumber('7')">7</button>
-            <button class="button" onclick="appendNumber('8')">8</button>
-            <button class="button" onclick="appendNumber('9')">9</button>
-            <button class="button" onclick="appendOperator('/')">/</button>
-
-            <button class="button" onclick="appendNumber('4')">4</button>
-            <button class="button" onclick="appendNumber('5')">5</button>
-            <button class="button" onclick="appendNumber('6')">6</button>
-            <button class="button" onclick="appendOperator('*')">*</button>
-
-            <button class="button" onclick="appendNumber('1')">1</button>
-            <button class="button" onclick="appendNumber('2')">2</button>
-            <button class="button" onclick="appendNumber('3')">3</button>
-            <button class="button" onclick="appendOperator('-')">-</button>
-
-            <button class="button" onclick="appendNumber('0')">0</button>
-            <button class="button" onclick="appendOperator('.')">.</button>
-            <button class="button" onclick="calculateResult()">=</button>
-            <button class="button" onclick="appendOperator('+')">+</button>
-        </div>
+  <div class="container">
+    <h1>Jogo da Velha</h1>
+    <div class="menu">
+      <label for="difficulty">Escolha a Dificuldade:</label>
+      <select id="difficulty">
+        <option value="easy">Fácil</option>
+        <option value="medium">Médio</option>
+        <option value="hard">Difícil</option>
+        <option value="impossible">Impossível</option>
+      </select>
     </div>
+    <div class="board" id="board">
+      <div class="cell" onclick="makeMove(0)"></div>
+      <div class="cell" onclick="makeMove(1)"></div>
+      <div class="cell" onclick="makeMove(2)"></div>
+      <div class="cell" onclick="makeMove(3)"></div>
+      <div class="cell" onclick="makeMove(4)"></div>
+      <div class="cell" onclick="makeMove(5)"></div>
+      <div class="cell" onclick="makeMove(6)"></div>
+      <div class="cell" onclick="makeMove(7)"></div>
+      <div class="cell" onclick="makeMove(8)"></div>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
 
-    <script>
-        let displayValue = '';
+  <script>
+    const board = document.getElementById("board");
+    let gameBoard = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = 'X';
+    let gameOver = false;
 
-        function updateDisplay() {
-            document.getElementById('display').value = displayValue;
+    const difficultyLevels = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+      impossible: 4,
+    };
+
+    let difficulty = 'easy';
+
+    document.getElementById('difficulty').addEventListener('change', function () {
+      difficulty = this.value;
+    });
+
+    function makeMove(index) {
+      if (gameOver || gameBoard[index]) return;
+      gameBoard[index] = currentPlayer;
+      updateBoard();
+      if (checkWinner()) {
+        document.getElementById('status').textContent = `${currentPlayer} venceu!`;
+        gameOver = true;
+        return;
+      }
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      if (currentPlayer === 'O') {
+        botMove();
+      }
+    }
+
+    function updateBoard() {
+      gameBoard.forEach((cell, index) => {
+        const cellElement = board.children[index];
+        cellElement.textContent = cell;
+        cellElement.style.pointerEvents = cell ? 'none' : 'auto';
+      });
+    }
+
+    function checkWinner() {
+      const winningCombos = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+
+      for (let combo of winningCombos) {
+        const [a, b, c] = combo;
+        if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+          return true;
         }
+      }
+      return gameBoard.every(cell => cell !== '');
+    }
 
-        function appendNumber(number) {
-            displayValue += number;
-            updateDisplay();
-        }
+    function botMove() {
+      let availableMoves = gameBoard.map((cell, index) => !cell ? index : -1).filter(index => index !== -1);
+      
+      let move;
+      
+      if (difficulty === 'easy') {
+        move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+      } else {
+        move = getBestMove();
+      }
 
-        function appendOperator(operator) {
-            if (displayValue !== '' && !['+', '-', '*', '/'].includes(displayValue.slice(-1))) {
-                displayValue += ' ' + operator + ' ';
-                updateDisplay();
-            }
-        }
+      gameBoard[move] = 'O';
+      updateBoard();
+      if (checkWinner()) {
+        document.getElementById('status').textContent = 'O venceu!';
+        gameOver = true;
+      } else {
+        currentPlayer = 'X';
+      }
+    }
 
-        function clearDisplay() {
-            displayValue = '';
-            updateDisplay();
-        }
+    function getBestMove() {
+      const availableMoves = gameBoard.map((cell, index) => !cell ? index : -1).filter(index => index !== -1);
+      
+      if (difficulty === 'hard' || difficulty === 'impossible') {
+        return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+      }
 
-        function calculateResult() {
-            try {
-                displayValue = eval(displayValue.replace(/[^-()\d/*+.]/g, '')).toString();
-                updateDisplay();
-            } catch (error) {
-                displayValue = 'Error';
-                updateDisplay();
-            }
-        }
-    </script>
-
+      return availableMoves[0];  // Placeholder for more complex logic
+    }
+  </script>
 </body>
 </html>
