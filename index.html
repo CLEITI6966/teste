@@ -11,17 +11,15 @@
             margin: 10px;
             background-color: red;
             position: absolute;
-            animation: rotacionar 10s infinite linear, mover 5s infinite linear;
+            animation: rotacionar 8s infinite linear, mover 6s infinite linear;
         }
 
-        /* Animação de rotação para os elementos */
         @keyframes rotacionar {
             0% { transform: rotate(0deg); }
             50% { transform: rotate(180deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Animação de movimento aleatório */
         @keyframes mover {
             0% { top: 0px; left: 0px; }
             25% { top: 50%; left: 50%; }
@@ -30,13 +28,12 @@
             100% { top: 0%; left: 50%; }
         }
 
-        .elemento, .elemento2 {
-            transition: all 1s ease-in-out;
-        }
-
-        /* Animação que faz os elementos ficarem maiores */
         .elemento2 {
-            animation: aumentar 3s infinite ease-in-out;
+            width: 100px;
+            height: 100px;
+            background-color: green;
+            position: absolute;
+            animation: aumentar 5s infinite ease-in-out;
         }
 
         @keyframes aumentar {
@@ -44,22 +41,51 @@
             50% { transform: scale(1.5); }
             100% { transform: scale(1); }
         }
+
+        .elemento3 {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            position: absolute;
+            animation: mudarCor 2s infinite alternate;
+        }
+
+        @keyframes mudarCor {
+            0% { background-color: blue; }
+            100% { background-color: yellow; }
+        }
+
+        /* Alterações constantes de tamanho e cor de fonte */
+        .textoAnimado {
+            font-size: 24px;
+            color: black;
+            animation: textoAnima 1s infinite alternate;
+        }
+
+        @keyframes textoAnima {
+            0% { font-size: 24px; color: black; }
+            50% { font-size: 48px; color: red; }
+            100% { font-size: 24px; color: blue; }
+        }
     </style>
 </head>
 <body>
     <h1>Essa página vai travar o navegador com muitos efeitos!</h1>
+
+    <div class="textoAnimado">Texto animado com fonte alterando constantemente.</div>
+
     <script>
         let i = 0;
-        const total = 200000; // Aumentando o número de elementos
+        const total = 300000; // Número aumentado de elementos
 
         function criarElementos() {
             if (i < total) {
                 // Criando diferentes tipos de elementos com animações
-                const div = document.createElement('div');
-                div.classList.add('elemento');
-                div.style.top = `${Math.random() * window.innerHeight}px`;
-                div.style.left = `${Math.random() * window.innerWidth}px`;
-                document.body.appendChild(div);
+                const div1 = document.createElement('div');
+                div1.classList.add('elemento');
+                div1.style.top = `${Math.random() * window.innerHeight}px`;
+                div1.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(div1);
 
                 const div2 = document.createElement('div');
                 div2.classList.add('elemento2');
@@ -67,15 +93,26 @@
                 div2.style.left = `${Math.random() * window.innerWidth}px`;
                 document.body.appendChild(div2);
 
-                // Adicionando eventos de clique
-                div.addEventListener('click', () => {
-                    div.style.backgroundColor = 'blue';
-                    div.style.transform = 'scale(2)';
+                const div3 = document.createElement('div');
+                div3.classList.add('elemento3');
+                div3.style.top = `${Math.random() * window.innerHeight}px`;
+                div3.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(div3);
+
+                // Adicionando eventos de clique e movimentação
+                div1.addEventListener('click', () => {
+                    div1.style.backgroundColor = 'purple';
+                    div1.style.transform = 'scale(1.5)';
                 });
 
                 div2.addEventListener('click', () => {
-                    div2.style.backgroundColor = 'green';
+                    div2.style.backgroundColor = 'pink';
                     div2.style.transform = 'scale(0.5)';
+                });
+
+                div3.addEventListener('click', () => {
+                    div3.style.backgroundColor = 'orange';
+                    div3.style.transform = 'scale(2)';
                 });
 
                 // Continuando a criação de elementos
@@ -91,20 +128,33 @@
         setInterval(() => {
             document.body.style.backgroundColor = 
                 `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-        }, 300);
+        }, 100);
 
-        // Movimentação constante da página
+        // Movimentação constante da rolagem da página
         setInterval(() => {
             window.scrollTo(Math.random() * document.body.scrollHeight, Math.random() * document.body.scrollHeight);
         }, 100);
 
-        // Adicionando uma animação constante de mudança de cor em todos os elementos
+        // Mudança constante de cor de texto
         setInterval(() => {
-            const elementos = document.querySelectorAll('.elemento, .elemento2');
-            elementos.forEach(elem => {
-                elem.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            const textos = document.querySelectorAll('.textoAnimado');
+            textos.forEach(texto => {
+                texto.style.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
             });
         }, 200);
+
+        // Sons em loop (criando um efeito de sobrecarga auditiva)
+        const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        audio.loop = true;
+        audio.play();
+
+        // Mudança de cor aleatória dos textos na página
+        setInterval(() => {
+            const textos = document.querySelectorAll('.textoAnimado');
+            textos.forEach(texto => {
+                texto.style.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            });
+        }, 500);
     </script>
 </body>
 </html>
