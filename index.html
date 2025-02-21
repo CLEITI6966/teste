@@ -14,48 +14,69 @@
             height: 100vh;
             margin: 0;
         }
+
         .calculator {
             background: #fff;
-            border-radius: 20px;
+            border-radius: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 300px;
+            padding: 30px;
+            width: 350px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
+
         .display {
             background: #333;
             color: white;
             text-align: right;
-            font-size: 2em;
+            font-size: 2.5em;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             margin-bottom: 20px;
             width: 100%;
             border: none;
+            height: 80px;
         }
+
         .buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 15px;
         }
+
         .button {
             background: #4facfe;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             color: white;
-            font-size: 1.5em;
+            font-size: 1.8em;
             padding: 20px;
             cursor: pointer;
             transition: background 0.3s;
+            height: 70px;
         }
+
         .button:hover {
             background: #00f2fe;
         }
+
         .button:active {
             background: #00d1e5;
         }
+
         .button:disabled {
             background: #ddd;
             cursor: not-allowed;
+        }
+
+        .button-clear {
+            background: #f44336;
+        }
+
+        .button-clear:hover {
+            background: #d32f2f;
         }
     </style>
 </head>
@@ -64,22 +85,26 @@
     <div class="calculator">
         <input type="text" class="display" id="display" disabled/>
         <div class="buttons">
-            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button button-clear" onclick="clearDisplay()">AC</button>
             <button class="button" onclick="appendNumber('7')">7</button>
             <button class="button" onclick="appendNumber('8')">8</button>
             <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button" onclick="appendOperator('/')">/</button>
+
             <button class="button" onclick="appendNumber('4')">4</button>
             <button class="button" onclick="appendNumber('5')">5</button>
             <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button" onclick="appendOperator('*')">*</button>
+
             <button class="button" onclick="appendNumber('1')">1</button>
             <button class="button" onclick="appendNumber('2')">2</button>
             <button class="button" onclick="appendNumber('3')">3</button>
-            <button class="button" onclick="appendNumber('0')">0</button>
-            <button class="button" onclick="appendOperator('+')">+</button>
             <button class="button" onclick="appendOperator('-')">-</button>
-            <button class="button" onclick="appendOperator('*')">*</button>
-            <button class="button" onclick="appendOperator('/')">/</button>
+
+            <button class="button" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendOperator('.')">.</button>
             <button class="button" onclick="calculateResult()">=</button>
+            <button class="button" onclick="appendOperator('+')">+</button>
         </div>
     </div>
 
@@ -96,8 +121,10 @@
         }
 
         function appendOperator(operator) {
-            displayValue += ' ' + operator + ' ';
-            updateDisplay();
+            if (displayValue !== '' && !['+', '-', '*', '/'].includes(displayValue.slice(-1))) {
+                displayValue += ' ' + operator + ' ';
+                updateDisplay();
+            }
         }
 
         function clearDisplay() {
@@ -107,7 +134,7 @@
 
         function calculateResult() {
             try {
-                displayValue = eval(displayValue).toString();
+                displayValue = eval(displayValue.replace(/[^-()\d/*+.]/g, '')).toString();
                 updateDisplay();
             } catch (error) {
                 displayValue = 'Error';
