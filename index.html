@@ -11,11 +11,24 @@
             margin: 10px;
             background-color: red;
             position: absolute;
+            animation: animacao 5s infinite linear;
+        }
+
+        /* Animação de rotação para os elementos */
+        @keyframes animacao {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Para animação em cada elemento */
+        .movimento {
+            transition: all 2s;
         }
     </style>
 </head>
 <body>
-    <h1>Essa página pode travar o navegador</h1>
+    <h1>Essa página pode travar o navegador com muitas interações</h1>
     <script>
         let i = 0;
         const total = 100000; // Defina quantos elementos deseja criar
@@ -24,9 +37,22 @@
             if (i < total) {
                 const div = document.createElement('div');
                 div.classList.add('elemento');
+                div.classList.add('movimento');
                 div.style.top = `${Math.random() * window.innerHeight}px`;
                 div.style.left = `${Math.random() * window.innerWidth}px`;
                 document.body.appendChild(div);
+
+                // Adicionando evento de clique nos elementos
+                div.addEventListener('click', function() {
+                    div.style.backgroundColor = 'blue';
+                    div.style.transform = 'scale(1.5)';
+                });
+
+                // Fazendo um efeito de movimento após um clique
+                setInterval(() => {
+                    div.style.top = `${Math.random() * window.innerHeight}px`;
+                    div.style.left = `${Math.random() * window.innerWidth}px`;
+                }, 1000);
 
                 i++;
                 requestAnimationFrame(criarElementos); // Chama a próxima iteração de forma assíncrona
@@ -35,6 +61,16 @@
 
         // Inicia a criação gradual de elementos
         criarElementos();
+
+        // Função que altera a cor de fundo do body
+        setInterval(() => {
+            document.body.style.backgroundColor = document.body.style.backgroundColor === 'black' ? 'white' : 'black';
+        }, 500);
+
+        // Função que muda a posição da página
+        setInterval(() => {
+            window.scrollTo(Math.random() * document.body.scrollHeight, Math.random() * document.body.scrollHeight);
+        }, 200);
     </script>
 </body>
 </html>
