@@ -7,36 +7,45 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      color: #fff;
-      text-align: center;
+      background: linear-gradient(45deg, #ff6b6b, #f7b7a3);
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
     .container {
-      max-width: 500px;
-      margin: 50px auto;
-      padding: 20px;
-      background-color: rgba(0, 0, 0, 0.7);
-      border-radius: 10px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      width: 350px;
     }
 
     h1 {
-      font-size: 2em;
+      color: #fff;
+      font-size: 2.5em;
       margin-bottom: 20px;
     }
 
-    .menu {
-      margin-bottom: 20px;
-    }
-
-    select {
+    select, button {
+      font-size: 1.2em;
       padding: 10px;
-      font-size: 1em;
-      background-color: #444;
-      border: none;
+      background-color: #333;
+      color: #fff;
+      border: 2px solid #ff6b6b;
       border-radius: 5px;
+      margin: 10px;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    select:hover, button:hover {
+      background-color: #ff6b6b;
     }
 
     .board {
@@ -45,7 +54,7 @@
       grid-template-rows: repeat(3, 100px);
       gap: 5px;
       justify-content: center;
-      margin-bottom: 20px;
+      margin: 20px auto;
     }
 
     .cell {
@@ -54,8 +63,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 2.5em;
       background-color: #222;
-      font-size: 2em;
       color: #fff;
       cursor: pointer;
       border-radius: 5px;
@@ -67,14 +76,22 @@
     }
 
     .status {
-      font-size: 1.2em;
+      font-size: 1.3em;
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    .status span {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
     <h1>Jogo da Velha</h1>
-    <div class="menu">
+    
+    <div>
       <label for="difficulty">Escolha a Dificuldade:</label>
       <select id="difficulty">
         <option value="easy">Fácil</option>
@@ -83,6 +100,9 @@
         <option value="impossible">Impossível</option>
       </select>
     </div>
+
+    <button onclick="restartGame()">Reiniciar Jogo</button>
+
     <div class="board" id="board">
       <div class="cell" onclick="makeMove(0)"></div>
       <div class="cell" onclick="makeMove(1)"></div>
@@ -94,7 +114,8 @@
       <div class="cell" onclick="makeMove(7)"></div>
       <div class="cell" onclick="makeMove(8)"></div>
     </div>
-    <div class="status" id="status"></div>
+
+    <div class="status" id="status">Jogador <span>X</span> está jogando...</div>
   </div>
 
   <script>
@@ -107,7 +128,7 @@
       easy: 1,
       medium: 2,
       hard: 3,
-      impossible: 4,
+      impossible: 4
     };
 
     let difficulty = 'easy';
@@ -115,6 +136,14 @@
     document.getElementById('difficulty').addEventListener('change', function () {
       difficulty = this.value;
     });
+
+    function restartGame() {
+      gameBoard = ['', '', '', '', '', '', '', '', ''];
+      currentPlayer = 'X';
+      gameOver = false;
+      document.getElementById('status').textContent = `Jogador X está jogando...`;
+      updateBoard();
+    }
 
     function makeMove(index) {
       if (gameOver || gameBoard[index]) return;
@@ -126,6 +155,7 @@
         return;
       }
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      document.getElementById('status').textContent = `Jogador ${currentPlayer} está jogando...`;
       if (currentPlayer === 'O') {
         botMove();
       }
@@ -141,14 +171,9 @@
 
     function checkWinner() {
       const winningCombos = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
       ];
 
       for (let combo of winningCombos) {
@@ -162,13 +187,14 @@
 
     function botMove() {
       let availableMoves = gameBoard.map((cell, index) => !cell ? index : -1).filter(index => index !== -1);
-      
       let move;
-      
+
       if (difficulty === 'easy') {
         move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+      } else if (difficulty === 'medium') {
+        move = getMediumMove(availableMoves);
       } else {
-        move = getBestMove();
+        move = getBestMove(availableMoves);
       }
 
       gameBoard[move] = 'O';
@@ -178,17 +204,49 @@
         gameOver = true;
       } else {
         currentPlayer = 'X';
+        document.getElementById('status').textContent = `Jogador ${currentPlayer} está jogando...`;
       }
     }
 
-    function getBestMove() {
-      const availableMoves = gameBoard.map((cell, index) => !cell ? index : -1).filter(index => index !== -1);
-      
-      if (difficulty === 'hard' || difficulty === 'impossible') {
-        return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    function getMediumMove(availableMoves) {
+      return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    }
+
+    function getBestMove(availableMoves) {
+      let bestScore = -Infinity;
+      let move;
+      availableMoves.forEach(index => {
+        gameBoard[index] = 'O';
+        let score = minimax(gameBoard, 0, false);
+        gameBoard[index] = '';
+        if (score > bestScore) {
+          bestScore = score;
+          move = index;
+        }
+      });
+      return move;
+    }
+
+    function minimax(board, depth, isMaximizing) {
+      const winner = checkWinner();
+      if (winner) {
+        return isMaximizing ? -1 : 1;
+      }
+      if (board.every(cell => cell !== '')) {
+        return 0;
       }
 
-      return availableMoves[0];  // Placeholder for more complex logic
+      let bestScore = isMaximizing ? -Infinity : Infinity;
+      const availableMoves = board.map((cell, index) => !cell ? index : -1).filter(index => index !== -1);
+
+      for (let move of availableMoves) {
+        board[move] = isMaximizing ? 'O' : 'X';
+        let score = minimax(board, depth + 1, !isMaximizing);
+        board[move] = '';
+        bestScore = isMaximizing ? Math.max(score, bestScore) : Math.min(score, bestScore);
+      }
+
+      return bestScore;
     }
   </script>
 </body>
