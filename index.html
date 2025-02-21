@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Louca</title>
+    <title>Página Louca com Mais Efeitos</title>
     <style>
         * {
             margin: 0;
@@ -18,39 +18,27 @@
             overflow: hidden;
         }
 
-        .elemento {
+        /* Efeito de Pulsação */
+        .pulsacao {
             position: absolute;
             width: 100px;
             height: 100px;
-            background-color: red;
-            animation: rotacionar 4s infinite linear, mudarCor 2s infinite alternate, mover 5s infinite linear;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+            background-color: rgba(255, 0, 0, 0.5);
+            animation: pulsar 1.5s infinite alternate;
+            border-radius: 50%;
         }
 
-        @keyframes rotacionar {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes pulsar {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0.5; }
         }
 
-        @keyframes mover {
-            0% { top: 0px; left: 0px; }
-            50% { top: 50%; left: 50%; }
-            100% { top: 100%; left: 100%; }
-        }
-
-        @keyframes mudarCor {
-            0% { background-color: red; }
-            25% { background-color: green; }
-            50% { background-color: blue; }
-            75% { background-color: yellow; }
-            100% { background-color: purple; }
-        }
-
+        /* Efeito de texto piscando */
         .textoLouco {
             font-size: 36px;
             color: black;
             position: absolute;
-            animation: textoAnima 1s infinite alternate, mudarSombra 1.5s infinite alternate;
+            animation: textoAnima 1s infinite alternate, mudarSombra 1.5s infinite alternate, piscarTexto 0.2s infinite alternate;
         }
 
         @keyframes textoAnima {
@@ -58,74 +46,129 @@
             100% { font-size: 72px; }
         }
 
+        @keyframes piscarTexto {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
         @keyframes mudarSombra {
             0% { text-shadow: 3px 3px 5px rgba(0,0,0,0.5); }
             100% { text-shadow: -3px -3px 10px rgba(0,0,0,0.9); }
         }
 
-        .filtro {
+        /* Efeito de partículas */
+        .particula {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 0, 0, 0.3);
-            filter: blur(5px);
-            animation: distorcer 2s infinite alternate;
+            width: 5px;
+            height: 5px;
+            background-color: rgba(0, 255, 0, 0.8);
+            animation: moverParticula 2s infinite;
+            border-radius: 50%;
+        }
+
+        @keyframes moverParticula {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(var(--x), var(--y)); }
+        }
+
+        /* Efeito de explosão de cor */
+        .explosao {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+            animation: explodir 0.8s infinite alternate;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        @keyframes explodir {
+            0% { transform: scale(1); background-color: red; }
+            50% { transform: scale(1.5); background-color: yellow; }
+            100% { transform: scale(2); background-color: green; }
+        }
+
+        /* Efeito de distorção e escala */
+        .distorcao {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            animation: distorcer 3s infinite alternate, rolar 2s infinite linear;
         }
 
         @keyframes distorcer {
-            0% { filter: blur(5px); }
-            100% { filter: blur(20px); }
+            0% { transform: scale(1) skew(0deg); }
+            100% { transform: scale(2) skew(45deg); }
         }
 
-        .zoom {
+        @keyframes rolar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Efeito de borda animada */
+        .bordaAnimada {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: orange;
-            animation: zoomInOut 3s infinite alternate;
+            width: 200px;
+            height: 200px;
+            border: 5px solid purple;
+            animation: borda 4s infinite linear;
         }
 
-        @keyframes zoomInOut {
-            0% { transform: scale(1); }
-            100% { transform: scale(3); }
+        @keyframes borda {
+            0% { border-color: purple; }
+            50% { border-color: green; }
+            100% { border-color: red; }
         }
     </style>
 </head>
 <body>
 
-    <h1 class="textoLouco">Página Totalmente Louca</h1>
+    <h1 class="textoLouco">Página Totalmente Louca com Mais Efeitos</h1>
 
     <script>
         let i = 0;
-        const total = 500; // Número de elementos
+        const total = 300; // Número de elementos
 
         function criarElementos() {
             if (i < total) {
-                // Criando elementos com animações e efeitos
-                const div = document.createElement('div');
-                div.classList.add('elemento');
-                div.style.top = `${Math.random() * window.innerHeight}px`;
-                div.style.left = `${Math.random() * window.innerWidth}px`;
-                document.body.appendChild(div);
+                // Criando elementos de pulsação
+                const divPulsacao = document.createElement('div');
+                divPulsacao.classList.add('pulsacao');
+                divPulsacao.style.top = `${Math.random() * window.innerHeight}px`;
+                divPulsacao.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(divPulsacao);
 
-                // Adicionando zoom e distorção em outros elementos
-                const divZoom = document.createElement('div');
-                divZoom.classList.add('zoom');
-                divZoom.style.top = `${Math.random() * window.innerHeight}px`;
-                divZoom.style.left = `${Math.random() * window.innerWidth}px`;
-                document.body.appendChild(divZoom);
+                // Criando explosões
+                const divExplosao = document.createElement('div');
+                divExplosao.classList.add('explosao');
+                divExplosao.style.top = `${Math.random() * window.innerHeight}px`;
+                divExplosao.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(divExplosao);
 
-                // Adicionando filtro de distorção
-                const filtro = document.createElement('div');
-                filtro.classList.add('filtro');
-                document.body.appendChild(filtro);
+                // Criando distorções
+                const divDistorcao = document.createElement('div');
+                divDistorcao.classList.add('distorcao');
+                divDistorcao.style.top = `${Math.random() * window.innerHeight}px`;
+                divDistorcao.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(divDistorcao);
 
-                // Evento para alterar estilo ao clicar
-                div.addEventListener('click', () => {
-                    div.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-                    div.style.boxShadow = `0px 0px ${Math.random() * 30}px rgba(0, 0, 0, 0.7)`;
-                    div.style.transform = `scale(${Math.random() * 3}) rotate(${Math.random() * 360}deg)`;
-                });
+                // Criando partículas
+                const divParticula = document.createElement('div');
+                divParticula.classList.add('particula');
+                divParticula.style.top = `${Math.random() * window.innerHeight}px`;
+                divParticula.style.left = `${Math.random() * window.innerWidth}px`;
+                divParticula.style.setProperty('--x', `${Math.random() * 100 - 50}px`);
+                divParticula.style.setProperty('--y', `${Math.random() * 100 - 50}px`);
+                document.body.appendChild(divParticula);
+
+                // Criando bordas animadas
+                const divBorda = document.createElement('div');
+                divBorda.classList.add('bordaAnimada');
+                divBorda.style.top = `${Math.random() * window.innerHeight}px`;
+                divBorda.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(divBorda);
 
                 i++;
                 requestAnimationFrame(criarElementos); // Criação assíncrona para evitar travamento
@@ -135,30 +178,30 @@
         // Inicia a criação de elementos
         criarElementos();
 
-        // Mudança constante de cores e fundo da página
+        // Mudança constante de cores da página
         setInterval(() => {
             document.body.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
         }, 50);
 
-        // Mudança aleatória de posição dos elementos
-        setInterval(() => {
-            const elementos = document.querySelectorAll('.elemento');
-            elementos.forEach(el => {
-                el.style.top = `${Math.random() * window.innerHeight}px`;
-                el.style.left = `${Math.random() * window.innerWidth}px`;
-            });
-        }, 100);
-
-        // Efeito de zoom em todos os textos
+        // Efeito de movimento rápido de texto
         setInterval(() => {
             const textos = document.querySelectorAll('.textoLouco');
             textos.forEach(texto => {
-                texto.style.transform = `scale(${Math.random() * 2})`;
+                texto.style.left = `${Math.random() * window.innerWidth}px`;
+                texto.style.top = `${Math.random() * window.innerHeight}px`;
             });
         }, 200);
 
-        // Sons de alerta em loop
-        const audio = new Audio('https://www.soundjay.com/button/beep-01a.mp3');
+        // Mudança aleatória de opacidade
+        setInterval(() => {
+            const elementos = document.querySelectorAll('.explosao, .distorcao, .pulsacao, .bordaAnimada');
+            elementos.forEach(el => {
+                el.style.opacity = Math.random();
+            });
+        }, 500);
+
+        // Efeito de som em loop
+        const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
         audio.loop = true;
         audio.play();
 
