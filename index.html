@@ -17,14 +17,24 @@
 <body>
     <h1>Essa página pode travar o navegador</h1>
     <script>
-        // Usando o loop 'for' para adicionar muitos elementos ao DOM
-        for (let i = 0; i < 100000000000; i++) {
-            const div = document.createElement('div');
-            div.classList.add('elemento');
-            div.style.top = `${Math.random() * window.innerHeight}px`;
-            div.style.left = `${Math.random() * window.innerWidth}px`;
-            document.body.appendChild(div);
+        let i = 0;
+        const total = 100000; // Defina quantos elementos deseja criar
+
+        function criarElementos() {
+            if (i < total) {
+                const div = document.createElement('div');
+                div.classList.add('elemento');
+                div.style.top = `${Math.random() * window.innerHeight}px`;
+                div.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(div);
+
+                i++;
+                requestAnimationFrame(criarElementos); // Chama a próxima iteração de forma assíncrona
+            }
         }
+
+        // Inicia a criação gradual de elementos
+        criarElementos();
     </script>
 </body>
 </html>
