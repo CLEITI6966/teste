@@ -3,158 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobrecarregar o Navegador</title>
+    <title>Página Louca</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
         .elemento {
+            position: absolute;
             width: 100px;
             height: 100px;
-            margin: 10px;
             background-color: red;
-            position: absolute;
-            animation: rotacionar 8s infinite linear, mover 6s infinite linear;
+            animation: rotacionar 4s infinite linear, mudarCor 2s infinite alternate, mover 5s infinite linear;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
         }
 
         @keyframes rotacionar {
             0% { transform: rotate(0deg); }
-            50% { transform: rotate(180deg); }
             100% { transform: rotate(360deg); }
         }
 
         @keyframes mover {
             0% { top: 0px; left: 0px; }
-            25% { top: 50%; left: 50%; }
-            50% { top: 100%; left: 0%; }
-            75% { top: 50%; left: 100%; }
-            100% { top: 0%; left: 50%; }
-        }
-
-        .elemento2 {
-            width: 100px;
-            height: 100px;
-            background-color: green;
-            position: absolute;
-            animation: aumentar 5s infinite ease-in-out;
-        }
-
-        @keyframes aumentar {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.5); }
-            100% { transform: scale(1); }
-        }
-
-        .elemento3 {
-            width: 50px;
-            height: 50px;
-            background-color: blue;
-            position: absolute;
-            animation: mudarCor 2s infinite alternate;
+            50% { top: 50%; left: 50%; }
+            100% { top: 100%; left: 100%; }
         }
 
         @keyframes mudarCor {
-            0% { background-color: blue; }
-            100% { background-color: yellow; }
+            0% { background-color: red; }
+            25% { background-color: green; }
+            50% { background-color: blue; }
+            75% { background-color: yellow; }
+            100% { background-color: purple; }
         }
 
-        /* Alterações constantes de tamanho e cor de fonte */
-        .textoAnimado {
-            font-size: 24px;
+        .textoLouco {
+            font-size: 36px;
             color: black;
-            animation: textoAnima 1s infinite alternate;
+            position: absolute;
+            animation: textoAnima 1s infinite alternate, mudarSombra 1.5s infinite alternate;
         }
 
         @keyframes textoAnima {
-            0% { font-size: 24px; color: black; }
-            50% { font-size: 48px; color: red; }
-            100% { font-size: 24px; color: blue; }
+            0% { font-size: 36px; }
+            100% { font-size: 72px; }
+        }
+
+        @keyframes mudarSombra {
+            0% { text-shadow: 3px 3px 5px rgba(0,0,0,0.5); }
+            100% { text-shadow: -3px -3px 10px rgba(0,0,0,0.9); }
+        }
+
+        .filtro {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.3);
+            filter: blur(5px);
+            animation: distorcer 2s infinite alternate;
+        }
+
+        @keyframes distorcer {
+            0% { filter: blur(5px); }
+            100% { filter: blur(20px); }
+        }
+
+        .zoom {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: orange;
+            animation: zoomInOut 3s infinite alternate;
+        }
+
+        @keyframes zoomInOut {
+            0% { transform: scale(1); }
+            100% { transform: scale(3); }
         }
     </style>
 </head>
 <body>
-    <h1>Essa página vai travar o navegador com muitos efeitos!</h1>
 
-    <div class="textoAnimado">Texto animado com fonte alterando constantemente.</div>
+    <h1 class="textoLouco">Página Totalmente Louca</h1>
 
     <script>
         let i = 0;
-        const total = 300000; // Número aumentado de elementos
+        const total = 500; // Número de elementos
 
         function criarElementos() {
             if (i < total) {
-                // Criando diferentes tipos de elementos com animações
-                const div1 = document.createElement('div');
-                div1.classList.add('elemento');
-                div1.style.top = `${Math.random() * window.innerHeight}px`;
-                div1.style.left = `${Math.random() * window.innerWidth}px`;
-                document.body.appendChild(div1);
+                // Criando elementos com animações e efeitos
+                const div = document.createElement('div');
+                div.classList.add('elemento');
+                div.style.top = `${Math.random() * window.innerHeight}px`;
+                div.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(div);
 
-                const div2 = document.createElement('div');
-                div2.classList.add('elemento2');
-                div2.style.top = `${Math.random() * window.innerHeight}px`;
-                div2.style.left = `${Math.random() * window.innerWidth}px`;
-                document.body.appendChild(div2);
+                // Adicionando zoom e distorção em outros elementos
+                const divZoom = document.createElement('div');
+                divZoom.classList.add('zoom');
+                divZoom.style.top = `${Math.random() * window.innerHeight}px`;
+                divZoom.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(divZoom);
 
-                const div3 = document.createElement('div');
-                div3.classList.add('elemento3');
-                div3.style.top = `${Math.random() * window.innerHeight}px`;
-                div3.style.left = `${Math.random() * window.innerWidth}px`;
-                document.body.appendChild(div3);
+                // Adicionando filtro de distorção
+                const filtro = document.createElement('div');
+                filtro.classList.add('filtro');
+                document.body.appendChild(filtro);
 
-                // Adicionando eventos de clique e movimentação
-                div1.addEventListener('click', () => {
-                    div1.style.backgroundColor = 'purple';
-                    div1.style.transform = 'scale(1.5)';
+                // Evento para alterar estilo ao clicar
+                div.addEventListener('click', () => {
+                    div.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+                    div.style.boxShadow = `0px 0px ${Math.random() * 30}px rgba(0, 0, 0, 0.7)`;
+                    div.style.transform = `scale(${Math.random() * 3}) rotate(${Math.random() * 360}deg)`;
                 });
 
-                div2.addEventListener('click', () => {
-                    div2.style.backgroundColor = 'pink';
-                    div2.style.transform = 'scale(0.5)';
-                });
-
-                div3.addEventListener('click', () => {
-                    div3.style.backgroundColor = 'orange';
-                    div3.style.transform = 'scale(2)';
-                });
-
-                // Continuando a criação de elementos
                 i++;
-                requestAnimationFrame(criarElementos); // Chama a próxima iteração de forma assíncrona
+                requestAnimationFrame(criarElementos); // Criação assíncrona para evitar travamento
             }
         }
 
-        // Inicia a criação gradual de elementos
+        // Inicia a criação de elementos
         criarElementos();
 
-        // Mudando cores aleatórias de fundo da página
+        // Mudança constante de cores e fundo da página
         setInterval(() => {
-            document.body.style.backgroundColor = 
-                `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            document.body.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+        }, 50);
+
+        // Mudança aleatória de posição dos elementos
+        setInterval(() => {
+            const elementos = document.querySelectorAll('.elemento');
+            elementos.forEach(el => {
+                el.style.top = `${Math.random() * window.innerHeight}px`;
+                el.style.left = `${Math.random() * window.innerWidth}px`;
+            });
         }, 100);
 
-        // Movimentação constante da rolagem da página
+        // Efeito de zoom em todos os textos
         setInterval(() => {
-            window.scrollTo(Math.random() * document.body.scrollHeight, Math.random() * document.body.scrollHeight);
-        }, 100);
-
-        // Mudança constante de cor de texto
-        setInterval(() => {
-            const textos = document.querySelectorAll('.textoAnimado');
+            const textos = document.querySelectorAll('.textoLouco');
             textos.forEach(texto => {
-                texto.style.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+                texto.style.transform = `scale(${Math.random() * 2})`;
             });
         }, 200);
 
-        // Sons em loop (criando um efeito de sobrecarga auditiva)
-        const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        // Sons de alerta em loop
+        const audio = new Audio('https://www.soundjay.com/button/beep-01a.mp3');
         audio.loop = true;
         audio.play();
 
-        // Mudança de cor aleatória dos textos na página
-        setInterval(() => {
-            const textos = document.querySelectorAll('.textoAnimado');
-            textos.forEach(texto => {
-                texto.style.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-            });
-        }, 500);
     </script>
+
 </body>
 </html>
