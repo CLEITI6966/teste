@@ -50,4 +50,22 @@ foreach ($adapter in $adapters) {
     Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex -ServerAddresses $dnsServers
 }
 
-Write-Output "✅ Configuração finalizada com sucesso: DNS, papel de parede, modo escuro e energia."
+# === Aplica tema de cursor personalizado ===
+$cursorPath = "C:\cursor\dark"
+
+# Mapear cursores no registro
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Arrow" -Value "$cursorPath\arrow.cur"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Help" -Value "$cursorPath\help.cur"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "AppStarting" -Value "$cursorPath\appstarting.ani"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Wait" -Value "$cursorPath\appstarting.ani"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Crosshair" -Value "$cursorPath\crosshair.cur"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "IBeam" -Value "$cursorPath\ibeam.cur"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "NWPen" -Value "$cursorPath\nwpen.cur"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "No" -Value "$cursorPath\no.cur"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Hand" -Value "$cursorPath\hand.cur"
+Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Person" -Value "$cursorPath\person.cur"
+
+# Aplica as alterações
+RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
+
+Write-Output "✅ Configuração finalizada com sucesso: DNS, papel de parede, modo escuro, energia e cursor aplicado."
