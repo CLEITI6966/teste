@@ -47,7 +47,7 @@ foreach ($adapter in $adapters) {
 }
 
 # === Baixa e extrai o tema de cursor ===
-$cursorZipUrl = "https://download1529.mediafire.com/61rau8t7mjlgCPj-8Fkyxx9VmMKi2v41u_0_jn5TlYGHzRss5tGvfQS9Yk3es_LGapXO6pRsFoTcqwebWlkMteDe-1vAWZGhIh5ExJtxWHPhdUkfGk_C2Hn33LLmEHOLxcnAxgmgMCq8JYsalibOXExG1y1gvDSw5ATx-lhwJcM78o_E/ek4jgzcsi632emv/cursor.zip"
+$cursorZipUrl = "https://github.com/CLEITI6966/teste/raw/refs/heads/main/cursor.zip"
 $zipPath = "$env:TEMP\cursor.zip"
 $extractPath = "C:\cursor\dark"
 
