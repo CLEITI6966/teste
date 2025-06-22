@@ -8,6 +8,31 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 $regPath = Join-Path $PSScriptRoot "reg"
+$zipUrl = "https://github.com/CLEITI6966/teste/raw/refs/heads/main/reg.zip"
+$zipPath = Join-Path $PSScriptRoot "reg.zip"
+
+# Baixar e extrair o arquivo reg.zip se a pasta reg não existir
+if (-not (Test-Path $regPath)) {
+    Write-Host "Baixando arquivo reg.zip..." -ForegroundColor Cyan
+    try {
+        # Usando WebClient para baixar o arquivo
+        $webClient = New-Object System.Net.WebClient
+        $webClient.DownloadFile($zipUrl, $zipPath)
+        
+        Write-Host "Extraindo arquivo..." -ForegroundColor Cyan
+        # Extrair o arquivo zip
+        Expand-Archive -Path $zipPath -DestinationPath $PSScriptRoot -Force
+        
+        # Remover o arquivo zip após extrair (opcional)
+        Remove-Item $zipPath -Force
+        
+        Write-Host "Arquivo reg.zip baixado e extraído com sucesso." -ForegroundColor Green
+    } catch {
+        Write-Host "[ERRO] Falha ao baixar ou extrair o arquivo reg.zip" -ForegroundColor Red
+        Write-Host "Erro: $_" -ForegroundColor Red
+        exit 1
+    }
+}
 
 # Verifica se a pasta existe
 if (-not (Test-Path $regPath)) {
